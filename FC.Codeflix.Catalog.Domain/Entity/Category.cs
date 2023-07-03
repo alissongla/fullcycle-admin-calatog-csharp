@@ -20,8 +20,20 @@ public class Category
         
         Validate();
     }
+
+    public void Activate()
+    {
+        IsActive = true;
+        Validate();
+    }
     
-    public void Validate()
+    public void Deactivate()
+    {
+        IsActive = false;
+        Validate();
+    }
+    
+    private void Validate()
     {
         ValidateStringIsNullOrEmpty(Name, nameof(Name));
         ValidateStringLength(Name, nameof(Name), 3, 255);
