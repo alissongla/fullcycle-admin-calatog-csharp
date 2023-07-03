@@ -23,19 +23,31 @@ public class Category
     
     public void Validate()
     {
-        if (String.IsNullOrWhiteSpace(Name))
-            throw new EntityValidationException($"{nameof(Name)} should not be empty or null.");
+        ValidateStringIsNullOrEmpty(Name, nameof(Name));
+        ValidateStringLength(Name, nameof(Name), 3, 255);
         
-        if (Description == null)
-            throw new EntityValidationException($"{nameof(Description)} should not be null.");
+        ValidateStringIsNull(Description, nameof(Description));
+        ValidateStringLength(Description, nameof(Description), 0, 10000);
+    }
+    
+    private void ValidateStringIsNullOrEmpty(string value, string name)
+    {
+        if (String.IsNullOrWhiteSpace(value))
+            throw new EntityValidationException($"{name} should not be empty or null.");
+    }
+    
+    private void ValidateStringIsNull(string value, string name)
+    {
+        if (value == null)
+            throw new EntityValidationException($"{name} should not be null.");
+    }
+    
+    private void ValidateStringLength(string value, string name, int minLength, int maxLength)
+    {
+        if(value.Length < minLength)
+            throw new EntityValidationException($"{name} should be at least {minLength} characters long.");
         
-        if(Name.Length < 3)
-            throw new EntityValidationException($"{nameof(Name)} should be at least 3 characters long.");
-        
-        if(Name.Length > 255)
-            throw new EntityValidationException($"{nameof(Name)} should be less or equal 255 characters long.");
-        
-        if(Description.Length > 10000)
-            throw new EntityValidationException($"{nameof(Description)} should be less or equal 10000 characters long.");
+        if(value.Length > maxLength)
+            throw new EntityValidationException($"{name} should be less or equal {maxLength} characters long.");
     }
 }
